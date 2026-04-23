@@ -13,7 +13,9 @@ public class Booking  {
 	private int bid;
 	private int cid;
 	private String uname;
+//	start date
 	private String sdate;
+//	end date
 	private String edate;
 	public Booking(int cid, String uname, String sdate, String edate) {
 		super();

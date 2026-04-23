@@ -18,18 +18,35 @@ public class Changestatus extends HttpServlet {
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		  
-		  int bid=Integer.parseInt(req.getParameter("bid"));
-		  int cid=Integer.parseInt(req.getParameter("cid"));
+		int bid = 0;
+		int cid = 0;
+
+		try {
+		    bid = Integer.parseInt(req.getParameter("bid"));
+		    cid = Integer.parseInt(req.getParameter("cid"));
+		} catch (Exception e) {
+		    e.printStackTrace();
+		    resp.getWriter().print("Invalid booking or car ID");
+		    return; // stop execution
+		}
 		  
-		  EntityManagerFactory emf=Persistence.createEntityManagerFactory("carrental");
-			EntityManager em=emf.createEntityManager();
+		    EntityManager em = JPAUtil.getEntityManager();
 			EntityTransaction et=em.getTransaction();
 			
 			et.begin();
-			Car c=em.find(Car.class, cid);
-			c.setStatus("available");
 			
-			Booking b=em.find(Booking.class, bid);
+			
+//			making a booked car available means updating car status as available and removing booking
+			Car c=em.find(Car.class, cid);
+			if(c != null){
+			    c.setStatus(Constants.AVAILABLE);
+			}
+			
+			
+			Booking b = em.find(Booking.class, bid);
+			if(b != null){
+			    em.remove(b);
+			}
 			em.remove(b);
 			
 			et.commit();
@@ -37,6 +54,7 @@ public class Changestatus extends HttpServlet {
 			
 			  RequestDispatcher rd=req.getRequestDispatcher("listofbooking");
 			  rd.forward(req, resp);
+			  em.close();
 		  
 	}
 }

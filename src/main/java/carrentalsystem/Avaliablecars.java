@@ -19,24 +19,34 @@ public class Avaliablecars extends HttpServlet{
 	
 @Override
 protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-	EntityManagerFactory emf=Persistence.createEntityManagerFactory("carrental");
-	EntityManager em=emf.createEntityManager();
-	EntityTransaction et=em.getTransaction();
 	
-//	et.begin();
+	
+	
+//	create emf for hibernate
+	EntityManager em = JPAUtil.getEntityManager();
+	
+//	prepare  query to get only available car
+//	jpql query fetches only cars whose status is available
+	
+	
 	String query="select c from Car c where c.status=:stat";
 	
 	  List<Car> carlist=em.createQuery(query,Car.class).setParameter("stat","available").getResultList();
 	  
-	  System.out.println(carlist);
+	  System.out.println("Fetched available cars: " + carlist.size());
 	  
+	  
+	  
+//	  stores list of cars in request
 	  req.setAttribute("carlist", carlist);
   
 	  RequestDispatcher rd = req.getRequestDispatcher("availablecars.jsp");
 
 
-  rd.forward(req, resp);
-	  
+      rd.forward(req, resp);
+  
+//  servlet fetches data ,stores in request uing setAttribute,forwards to JSP , JSP reads request to display data
+  em.close();
 }
 }
 

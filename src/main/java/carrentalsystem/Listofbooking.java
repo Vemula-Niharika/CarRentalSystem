@@ -19,10 +19,8 @@ public class Listofbooking extends HttpServlet {
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
-		EntityManagerFactory emf = Persistence.createEntityManagerFactory("carrental");
-
-		EntityManager em=emf.createEntityManager();
-		EntityTransaction et=em.getTransaction();
+		EntityManager em = JPAUtil.getEntityManager();
+		
 		
 //		et.begin();
 		String query="select b from Booking b ";
@@ -34,5 +32,6 @@ public class Listofbooking extends HttpServlet {
 		  req.setAttribute("bookinglist",bookinglist);
 		  RequestDispatcher rd = req.getRequestDispatcher("listofbooking.jsp");
 		  rd.forward(req, resp);
+		  em.close();
 	}
 }

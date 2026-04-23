@@ -1,5 +1,6 @@
 package carrentalsystem;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 
@@ -7,9 +8,12 @@ import javax.persistence.Id;
 public class Car {
   @Id
   private int regCarId;
+  
   private String regCarName;
 	private String regCarModel;
+	@Column(unique = true)
 	private int regCarNumber;
+
 	private String status="available";
 	private String ownerName;
 	public int getRegCarId() {

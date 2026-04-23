@@ -67,8 +67,8 @@
                 <form action="bookcar" method="post" onsubmit="return validateBooking(this)">
                     <input type="hidden" name="carid" value="<%=car.getRegCarId()%>"/>
                     Name: <input type="text" name="uname" placeholder="Your Name" required/>
-                    Start Date: <input type="date" name="sdate" required/>
-                    End Date: <input type="date" name="edate" required/>
+                 Start Date:  <input type="date" name="sdate" required min="<%= java.time.LocalDate.now() %>"/>
+                 End Date:  <input type="date" name="edate" required min="<%= java.time.LocalDate.now() %>"/>
                     <input type="submit" value="Book"/>
                 </form>
             </td>
